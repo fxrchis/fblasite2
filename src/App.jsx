@@ -8,12 +8,15 @@ function App() {
     return (
         <BrowserRouter>
             {/* Navigation Links */}
-            <nav>
+            <div>
+                <nav className='bg-white text-black text-2xl w-full text-center p-2'>
                 <Link to="/">Home</Link> |{' '}
                 <Link to="/submission">Submission</Link> |{' '}
                 <Link to="/search">Search</Link> |{' '} 
                 <Link to="/inquiry">Inquiry</Link>
-            </nav>
+                </nav>
+            </div>
+            
 
             {/* Route Configuration */}
             <Routes>
