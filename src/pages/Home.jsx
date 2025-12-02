@@ -1,11 +1,19 @@
-import { useState } from 'react'
+import { useState } from "react";
 
 function Home() {
-  console.log("Test")
-  return (
-    <h1>Home</h1>
-  )
+  const [message, setMessage] = useState("Fernando");
 
+  function changeMessage() {
+    setMessage("HI FERNANDO");
+  }
+
+  return (
+    <div>
+      <h1>Home</h1>
+      <p>{message}</p>
+      <button onClick={changeMessage}>CLICK FERNANDO</button>
+    </div>
+  );
 }
 
-export default Home
+export default Home;
