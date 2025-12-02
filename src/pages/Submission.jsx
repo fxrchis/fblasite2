@@ -3,7 +3,9 @@ import { useState } from 'react'
 function Submission() {
 
   return (
-    <h1>Submission</h1>
+    <div>
+      <input type="text" id="item-submisson" required name="item-submission"></input>
+    </div>
   )
 }
 
