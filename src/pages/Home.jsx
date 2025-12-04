@@ -1,66 +1,79 @@
-import { useState } from "react";
-
 function Home() {
+  const features = [
+    {
+      title: "Submit Lost Item",
+      description: "Report a lost item with details to help others identify it.",
+      icon: "📝",
+      link: "/submission",
+      buttonText: "Submit Item"
+    },
+    {
+      title: "Search Items",
+      description: "Browse through found items to locate your lost belongings.",
+      icon: "🔍",
+      link: "/search",
+      buttonText: "Search Now"
+    },
+    {
+      title: "Claim Item",
+      description: "Found your item? Claim it by verifying the details.",
+      icon: "✅",
+      link: "/claim",
+      buttonText: "Claim Now"
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center">
-
-      {/* Header */}
-      <header className="w-full bg-white py-6 text-center">
-        <h1 className="text-gray-950 text-3xl font-semibold">
-          Welcome to Our Website
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          Lost & Found
         </h1>
-        <p className="text-gray-950 font-semibold py-3">
-          Request to find lost items, submit inquiries, or browse submissions.
+        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          Reuniting lost items with their owners through a simple and efficient platform.
         </p>
-      </header>
-
-      {/* Main Content Box */}
-      <div className="w-full flex justify-center items-center gap-6 py-12">
-
-        {/* Submission Box */}
-        <div className="mt-12 bg-gray-100 shadow-md rounded-lg p-8 w-11/12 h-64 max-w-xl flex flex-col items-center text-center">
-          <h2 className="text-2xl font-medium text-gray-800 mb-4">
-            Submissions
-          </h2>
-          <p className="text-gray-600">
-            Wanting to submit a lost item? Press the "Submit" button to continue.
-          </p>
-
-          <a href="/submission" className="mt-6 bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-500 transition">
-            Submit Item
-          </a>
-        </div>
-
-        {/* Search Box */}
-        <div className="mt-12 bg-gray-100 shadow-md rounded-lg p-8 w-11/12 h-64 max-w-xl flex flex-col items-center text-center">
-          <h2 className="text-2xl font-medium text-gray-800 mb-4">
-            Search
-          </h2>
-          <p className="text-gray-600">
-            Head to the Search page to browse for items that are lost around campus.
-          </p>
-
-          <a href="/search" className="mt-6 bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-500 transition">
-            Search Items
-          </a>
-        </div>
-
-        {/* Inquiry Box */}
-        <div className="mt-12 bg-gray-100 shadow-md rounded-lg p-8 w-11/12 h-64 max-w-xl flex flex-col items-center text-center">
-          <h2 className="text-2xl font-medium text-gray-800 mb-4">
-            Claim
-          </h2>
-          <p className="text-gray-600 ">
-            Found your item from the search? Go to the Claim page to claim your lost item.
-          </p>
-
-          <a href="/claim" className="mt-6 bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-500 transition">
-            Claim Item
-          </a>
-        </div>
-
       </div>
-      
+
+      {/* Features Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="grid md:grid-cols-3 gap-6">
+          {features.map((feature, index) => (
+            <div 
+              key={index}
+              className="bg-white rounded-lg shadow-sm p-6 border border-gray-100"
+            >
+              <div className="text-4xl mb-4">{feature.icon}</div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
+              <p className="text-gray-600 mb-4">{feature.description}</p>
+              <a
+                href={feature.link}
+                className="inline-block px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+              >
+                {feature.buttonText}
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="bg-indigo-700">
+        <div className="max-w-4xl mx-auto text-center py-12 px-4">
+          <h2 className="text-2xl font-bold text-white mb-4">
+            Can't find what you're looking for?
+          </h2>
+          <p className="text-indigo-100 mb-6">
+            Contact our support team for personalized assistance.
+          </p>
+          <a
+            href="/contact"
+            className="inline-block px-6 py-2 bg-white text-indigo-600 rounded-md hover:bg-gray-50"
+          >
+            Contact Support
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
