@@ -9,19 +9,28 @@ function App() {
         <BrowserRouter>
             {/* Navigation Links */}
             <div className="w-full">
-                <nav className="bg-gray-950 text-white flex items-center gap-6 p-3">
+                <nav className="w-full bg-gray-950 text-black flex items-center justify-between p-3">
 
-                    <h1 className="text-xl font-semibold">Hello</h1>
+                    {/* Left side */}
+                    <div className="flex items-center gap-6 text-white">
+                        <h1 className="text-xl font-semibold">Name</h1>
 
-                    <div className="flex gap-4">
-                        <Link to="/">Home</Link>
-                        <Link to="/submission">Submission</Link>
-                        <Link to="/search">Search</Link>
-                        <Link to="/inquiry">Inquiry</Link>
+                        <div className="flex gap-4">
+                            <Link to="/">Home</Link>
+                            <Link to="/submission">Submission</Link>
+                            <Link to="/search">Search</Link>
+                            <Link to="/inquiry">Inquiry</Link>
+                        </div>
                     </div>
+
+                    {/* Right side */}
+                    <button className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">
+                    Sign In
+                    </button>
 
                 </nav>
             </div>
+
 
             
 
