@@ -1,7 +1,7 @@
 import Home from './pages/Home.jsx'
 import Submission from './pages/Submission.jsx'
 import Search from './pages/Search.jsx'
-import Inquiry from './pages/Inquiry.jsx'
+import Claim from './pages/Claim.jsx'
 import signIn from './accountcreation/signIn.jsx'
 import signUp from './accountcreation/signUp.jsx'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
@@ -21,7 +21,7 @@ function App() {
                             <Link to="/">Home</Link>
                             <Link to="/submission">Submission</Link>
                             <Link to="/search">Search</Link>
-                            <Link to="/inquiry">Inquiry</Link>
+                            <Link to="/claim">Claim</Link>
                         </div>
                     </div>
 
@@ -41,7 +41,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/submission" element={<Submission />} />
                 <Route path="/search" element={<Search />} />
-                <Route path="/inquiry" element={<Inquiry />} />
+                <Route path="/claim" element={<Claim />} />
                 <Route path="/signin" element={<signIn />} />
                 <Route path="/signup" element={<signUp />} />
             </Routes>   
