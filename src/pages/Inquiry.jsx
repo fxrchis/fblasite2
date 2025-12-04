@@ -3,7 +3,7 @@ import { useState } from 'react'
 function Inquiry() {
 
   return (
-    <h1>Inquiry</h1>
+    <h1>eric</h1>
   )
 }
 
