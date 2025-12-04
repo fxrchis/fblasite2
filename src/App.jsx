@@ -8,14 +8,21 @@ function App() {
     return (
         <BrowserRouter>
             {/* Navigation Links */}
-            <div>
-                <nav className='bg-white text-black text-2xl w-full text-center p-2'>
-                <Link to="/">Home</Link> |{' '}
-                <Link to="/submission">Submission</Link> |{' '}
-                <Link to="/search">Search</Link> |{' '} 
-                <Link to="/inquiry">Inquiry</Link>
+            <div className="w-full">
+                <nav className="bg-gray-950 text-white flex items-center gap-6 p-3">
+
+                    <h1 className="text-xl font-semibold">Hello</h1>
+
+                    <div className="flex gap-4">
+                        <Link to="/">Home</Link>
+                        <Link to="/submission">Submission</Link>
+                        <Link to="/search">Search</Link>
+                        <Link to="/inquiry">Inquiry</Link>
+                    </div>
+
                 </nav>
             </div>
+
             
 
             {/* Route Configuration */}
