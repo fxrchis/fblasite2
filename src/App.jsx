@@ -2,6 +2,8 @@ import Home from './pages/Home.jsx'
 import Submission from './pages/Submission.jsx'
 import Search from './pages/Search.jsx'
 import Inquiry from './pages/Inquiry.jsx'
+import signIn from './accountcreation/signIn.js'
+import signUp from './accountcreation/signUp.js'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 
 function App() {
@@ -24,9 +26,9 @@ function App() {
                     </div>
 
                     {/* Right side */}
-                    <button className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">
-                    Sign In
-                    </button>
+                    <div className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">
+                        <Link to="/inquiry">Inquiry</Link>
+                    </div>
 
                 </nav>
             </div>
@@ -40,7 +42,9 @@ function App() {
                 <Route path="/submission" element={<Submission />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/inquiry" element={<Inquiry />} />
-            </Routes>
+                <Route path="/signin" element={<signIn />} />
+                <Route path="/signup" element={<signUp />} />
+            </Routes>   
         </BrowserRouter>
     );
 }
