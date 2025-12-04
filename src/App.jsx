@@ -2,8 +2,8 @@ import Home from './pages/Home.jsx'
 import Submission from './pages/Submission.jsx'
 import Search from './pages/Search.jsx'
 import Inquiry from './pages/Inquiry.jsx'
-import signIn from './accountcreation/signIn.js'
-import signUp from './accountcreation/signUp.js'
+import signIn from './accountcreation/signIn.jsx'
+import signUp from './accountcreation/signUp.jsx'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 
 function App() {
