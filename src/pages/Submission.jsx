@@ -2,12 +2,13 @@ import { useState } from "react";
 import supabase  from '../config/supabaseClient.js'
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Submission() {
   //variables
   const [itemName, setItemName] = useState("");
   const [itemDesc, setItemDesc] = useState("");
-  const [itemType, setItemType] = useState("");
+  const [itemType, setItemType] = useState("Select Item Type");
   const [itemPhoto, setItemPhoto] = useState(null);
   {/* prevents site refresh on submission */}
   function handleSubmit(ev) {
@@ -26,7 +27,7 @@ function Submission() {
     });
   }
   function checkSubmission() {
-    if (itemName == "" || itemDesc == "" || itemType == "" || !itemPhoto) {
+    if (itemName == "" || itemDesc == "" || itemType == "Select Item Type" || !itemPhoto) {
       alert("Please fill in all required fields!");
       return;
     }
@@ -40,10 +41,10 @@ function Submission() {
         <label>Name of Item</label>
         <input type="text" required value={itemName} onChange={(ev) => setItemName(ev.target.value)}/>
         <label>Type of Item</label>
-        <DropdownButton title="Select Item Type">
-          <Dropdown.Item onClick={() => setItemType("Clothing")}>Clothing</Dropdown.Item>
-          <Dropdown.Item onClick={() => setItemType("Electronics")}>Electronics</Dropdown.Item>
-          <Dropdown.Item onClick={() => setItemType("Miscallaneous")}>Miscallaneous</Dropdown.Item>
+        <DropdownButton title={itemType}>
+          <Dropdown.Item as = "button" onClick={() => setItemType("Clothing")}>Clothing</Dropdown.Item>
+          <Dropdown.Item as = "button" onClick={() => setItemType("Electronics")}>Electronics</Dropdown.Item>
+          <Dropdown.Item as = "button" onClick={() => setItemType("Miscallaneous")}>Miscallaneous</Dropdown.Item>
         </DropdownButton>
         <label>Description of Item</label>
         <textarea required value={itemDesc} onChange={(ev) => setItemDesc(ev.target.value)}/>
