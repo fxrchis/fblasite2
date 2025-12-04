@@ -27,7 +27,7 @@ function App() {
 
                     {/* Right side */}
                     <div className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">
-                        <Link to="/inquiry">Inquiry</Link>
+                        <Link to="/signin">Sign In</Link>
                     </div>
 
                 </nav>
