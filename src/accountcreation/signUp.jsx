@@ -1,10 +1,10 @@
 import { useState } from 'react'
 
-function signUp() {
+function SignUp() {
 
   return (
     <h1>signUp</h1>
   )
 }
 
-export default signUp
+export default SignUp

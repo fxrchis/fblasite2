@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function signIn() {
+function SignIn() {
 
   return (
     <div>
@@ -9,4 +9,4 @@ function signIn() {
   )
 }
 
-export default signIn
+export default SignIn

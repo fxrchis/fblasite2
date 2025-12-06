@@ -23,19 +23,58 @@ function Submission() {
       item_name: name,
       item_type: type,
       item_desc: desc,
-      img_url: img
+      image_url: img
     });
   }
-  function checkSubmission() {
-    if (itemName == "" || itemDesc == "" || itemType == "Select Item Type" || !itemPhoto) {
+  async function checkSubmission() {
+    if (itemName === "" || itemDesc === "" || itemType === "Select Item Type" || !itemPhoto) {
       alert("Please fill in all required fields!");
       return;
     }
-    send(itemName, itemType, itemDesc, itemPhoto);
-    console.log("function called");
+
+    // Upload file first
+    const filePath = `item_photos/${Date.now()}-${itemPhoto.name}`;
+
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("item-images")
+      .upload(filePath, itemPhoto);
+
+    if (uploadError) {
+      console.error("Upload error:", uploadError);
+      alert("Failed to upload image.");
+      return;
+    }
+
+    // Get public URL
+    const { data: urlData } = supabase.storage
+      .from("item-images")
+      .getPublicUrl(filePath);
+
+    const imgUrl = urlData.publicUrl;
+
+    // Insert into database
+    const { data, error } = await supabase
+      .from("items")
+      .insert({
+        item_name: itemName,
+        item_type: itemType,
+        item_desc: itemDesc,
+        image_url: imgUrl // is now converted into a string
+      });
+
+    if (error) {
+      console.error("Insert error:", error);
+      alert("Failed to save item.");
+      return;
+    }
+
+    send(itemName, itemDesc, itemType, imgUrl)
+    alert("Item submitted successfully!");
   }
+
+
   return (
-    <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center p-6">
+    <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center p-6 font-outfit">
 
       <h1 className="text-4xl font-bold text-blue-600 mb-6">
         Lost and Found Submission
@@ -56,22 +95,25 @@ function Submission() {
             value={itemName}
             onChange={(ev) => setItemName(ev.target.value)}
             className="p-3 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="Ex. Blue Backpack"
+            placeholder="Ex. Black Jansports Backpack"
           />
         </div>
 
         {/* Item Type */}
-        <div className="flex flex-col">
+        <div className="flex flex-col items-center">
           <label className="text-gray-700 font-medium mb-1">Type of Item</label>
           <DropdownButton 
             title={itemType} 
-            className="bg-gray-100 border border-gray-300 rounded-lg"
+            className=""
           >
             <Dropdown.Item as="button" onClick={() => setItemType("Clothing")}>
               Clothing
             </Dropdown.Item>
             <Dropdown.Item as="button" onClick={() => setItemType("Electronics")}>
               Electronics
+            </Dropdown.Item>
+            <Dropdown.Item as="button" onClick={() => setItemType("Electronics")}>
+              Shoes
             </Dropdown.Item>
             <Dropdown.Item as="button" onClick={() => setItemType("Miscellaneous")}>
               Miscellaneous
@@ -110,7 +152,7 @@ function Submission() {
         >
           Submit
         </button>
-      </form>
+      </form> 
     </div>
 
   );
