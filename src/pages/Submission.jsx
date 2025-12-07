@@ -18,14 +18,7 @@ function Submission() {
     console.log("Description:", itemDesc);
     console.log("Photo:", itemPhoto);
   }
-  async function send(name, desc, type, img) {
-    await supabase.from("items").insert({
-      item_name: name,
-      item_type: type,
-      item_desc: desc,
-      image_url: img
-    });
-  }
+  {/* sends data to supabase */}
   async function checkSubmission() {
     if (itemName === "" || itemDesc === "" || itemType === "Select Item Type" || !itemPhoto) {
       alert("Please fill in all required fields!");
@@ -68,7 +61,6 @@ function Submission() {
       return;
     }
 
-    send(itemName, itemDesc, itemType, imgUrl)
     alert("Item submitted successfully!");
   }
 
