@@ -3,7 +3,7 @@ import Submission from './pages/Submission.jsx'
 import Search from './pages/Search.jsx'
 import Claim from './pages/Claim.jsx'
 import SignIn from './accountcreation/SignIn.jsx'
-import SignUp from './accountcreation/SignUp.jsx'
+import SignUp from './accountcreation/signUp.jsx'
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom'
 
 
