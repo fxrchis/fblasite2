@@ -16,13 +16,13 @@ function SignUp() {
       return;
     }
     const { data, error } = await supabase
-      .from("items")
+      .from("users")
       .insert({
         user_name: username,
-        e_mail: email,
+        email: email,
         class_grade: classGrade,
         phone_num: phoneNum,
-        account_password: password
+        password: password
       });
 
     if (error) {
