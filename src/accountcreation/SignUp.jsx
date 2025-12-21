@@ -11,7 +11,6 @@ function SignUp() {
     const [password, setPassword] = useState(null);
 
   async function submission(){
-    ev.preventDefault();
     if (!username || !email || classGrade == "Select Class Grade" || !phoneNum || !password) {
       alert("Please fill in all required fields!");
       return;
