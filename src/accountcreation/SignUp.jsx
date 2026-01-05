@@ -1,110 +1,186 @@
 import { useState } from 'react'
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import supabase  from '../config/supabaseClient.js'
+import { useNavigate, Link } from 'react-router-dom'
+import supabase from '../config/supabaseClient.js'
 
 function SignUp() {
-    const [username, setUsername] = useState(null);
-    const [email, setEmail] = useState(null);
-    const [classGrade, setClassGrade] = useState("Select Class Grade");
-    const [phoneNum, setPhoneNum] = useState(null);
-    const [password, setPassword] = useState(null);
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    classGrade: '9th',
+    phone: '',
+    password: '',
+    confirmPassword: ''
+  })
+  const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
 
-  async function submission(){
-    if (!username || !email || classGrade == "Select Class Grade" || !phoneNum || !password) {
-      alert("Please fill in all required fields!");
-      return;
+  function handleChange(e) {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  async function handleSignUp(e) {
+    e.preventDefault()
+    
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords don't match!")
+      return
     }
-    const { data, error } = await supabase
-      .from("users")
-      .insert({
-        user_name: username,
-        email: email,
-        class_grade: classGrade,
-        phone_num: phoneNum,
-        password: password
-      });
 
-    if (error) {
-      console.error("Insert error:", error);
-      alert("Failed to create account.");
-      return;
+    if (formData.password.length < 6) {
+      alert("Password should be at least 6 characters")
+      return
     }
 
-    alert("Account created successfully!");
-  } 
+    setIsLoading(true)
+
+    try {
+      const { data: authData, error: signUpError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            username: formData.username,
+            class_grade: formData.classGrade,
+            phone: formData.phone
+          }
+        }
+      })
+
+      if (signUpError) throw signUpError
+
+      // Show success message with email confirmation notice
+      alert(`Account created successfully! Please check your email (${formData.email}) to verify your account.`)
+      
+      // Redirect to home after successful sign up
+      navigate("/")
+    } catch (error) {
+      alert(error.message || 'Something went wrong. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
-    <div className='w-full min-h-screen bg-blue-100 p-4 flex flex-col items-center justify-center font-outfit'>
-
-      <div className='bg-white shadow-2xl w-[420px] rounded-2xl flex flex-col p-8 gap-6 border border-blue-300'>
-
-        {/* Title */}
-        <h1 className='text-3xl font-bold text-center text-blue-700'>
-          Create Account
-        </h1>
-
-        {/* Already have account */}
-        <p className='text-center text-gray-600'>
-          Already have an account?{" "}
-          <a href="/signin" className='text-blue-500 font-medium hover:underline'>
-            Sign In
-          </a>
-        </p>
-
-        {/* Input fields */}
-        <div className='w-full flex flex-col gap-4'>
-
-          <input
-            type="text"
-            placeholder="Username"
-            className='p-3 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400'
-            onChange={(ev) => setUsername(ev.target.value)}
-          />
-
-          <input
-            type="email"
-            placeholder="Email"
-            className='p-3 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400'
-            onChange={(ev) => setEmail(ev.target.value)}
-          />
-
-          {/* Grade Dropdown */}
-          <div className='flex flex-col'>
-            <label className='text-gray-700 font-medium mb-1'>Class Grade</label>
-            <DropdownButton 
-              title={classGrade} 
-              className="w-full"
-            >
-              <Dropdown.Item as="button" onClick={() => setClassGrade("9th")} >9th</Dropdown.Item>
-              <Dropdown.Item as="button" onClick={() => setClassGrade("10th")}>10th</Dropdown.Item>
-              <Dropdown.Item as="button" onClick={() => setClassGrade("11th")}>11th</Dropdown.Item>
-              <Dropdown.Item as="button" onClick={() => setClassGrade("12th")}>12th</Dropdown.Item>
-            </DropdownButton>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 flex items-center justify-center p-4 font-outfit">
+      <div className="w-full max-w-md">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-center">
+            <h1 className="text-3xl font-bold text-white">Create Account</h1>
+            <p className="text-blue-100 mt-2">Join our community today</p>
           </div>
 
-          <input
-            type="tel"
-            placeholder="Phone Number"
-            className='p-3 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400'
-            onChange={(ev) => setPhoneNum(ev.target.value)}
-          />
+          {/* Form */}
+          <form onSubmit={handleSignUp} className="p-8 space-y-4">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                <input
+                  type="text"
+                  name="username"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  value={formData.username}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-          <input
-            type="password"
-            placeholder="Password"
-            className='p-3 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400'
-            onChange={(ev) => setPassword(ev.target.value)}
-          />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Class Grade</label>
+                <select
+                  name="classGrade"
+                  value={formData.classGrade}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                >
+                  <option value="9th">9th Grade</option>
+                  <option value="10th">10th Grade</option>
+                  <option value="11th">11th Grade</option>
+                  <option value="12th">12th Grade</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="At least 6 characters"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  minLength="6"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg disabled:opacity-70 mt-4"
+            >
+              {isLoading ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Creating Account...
+                </span>
+              ) : (
+                "Create Account"
+              )}
+            </button>
+
+            <div className="text-center text-sm text-gray-600 mt-4">
+              Already have an account?{' '}
+              <Link to="/signin" className="font-medium text-blue-600 hover:text-blue-500 hover:underline">
+                Sign in
+              </Link>
+            </div>
+          </form>
         </div>
-
-        {/* Button */}
-        <button 
-          onClick={() => submission()}
-          className='mt-4 w-2/3 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition flex justify-center mx-auto shadow-md'>
-          Create Account
-        </button>
-
       </div>
     </div>
   )

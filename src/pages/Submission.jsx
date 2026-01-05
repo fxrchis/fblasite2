@@ -47,14 +47,14 @@ function Submission() {
 
     // Insert into database
     const { data, error } = await supabase
-      .from("items")
-      .insert({
+      .from('items')
+      .insert([{
         item_name: itemName,
         item_type: itemType,
         item_desc: itemDesc,
-        image_url: imgUrl // is now converted into a string
-      });
-
+        image_url: imgUrl,
+        status: 'pending' // Add this line
+    }]);
     if (error) {
       console.error("Insert error:", error);
       alert("Failed to save item.");
