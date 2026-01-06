@@ -9,26 +9,6 @@ import SignUp from './accountcreation/SignUp.jsx'
 import supabase from './config/supabaseClient.js'
 import Admin from './pages/Admin';
 
-// Custom NavLink component for active state styling
-const NavLink = ({ to, children, className = '', ...props }) => {
-  const location = useLocation();
-  const isActive = location.pathname === to;
-  
-  return (
-    <Link
-      to={to}
-      className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors font-outfit ${
-        isActive 
-          ? 'text-indigo-600 bg-indigo-50' 
-          : 'text-gray-600 hover:text-indigo-600 hover:bg-gray-50'
-      } ${className}`}
-      {...props}
-    >
-      {children}
-    </Link>
-  );
-};
-
 function App() {
   const [user, setUser] = useState(null)
   const [showDropdown, setShowDropdown] = useState(false)
@@ -36,63 +16,100 @@ function App() {
   // Check for user session on mount
   useEffect(() => {
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null)
+    supabase.auth.getSession().then(function(response) {
+      var session = response.data.session
+      if (session && session.user) {
+        setUser(session.user)
+      } else {
+        setUser(null)
+      }
     })
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null)
+    var authListener = supabase.auth.onAuthStateChange(function(event, session) {
+      if (session && session.user) {
+        setUser(session.user)
+      } else {
+        setUser(null)
       }
-    )
+    })
 
-    return () => {
-      subscription?.unsubscribe()
+    return function() {
+      if (authListener && authListener.data && authListener.data.subscription) {
+        authListener.data.subscription.unsubscribe()
+      }
     }
   }, [])
 
-  const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut()
-    if (error) {
-      console.error('Error signing out:', error.message)
+  function handleSignOut() {
+    supabase.auth.signOut().then(function(response) {
+      if (response.error) {
+        console.error('Error signing out:', response.error.message)
+      }
+      setShowDropdown(false)
+      // Redirect to home after sign out
+      window.location.href = '/'
+    }).catch(function(error) {
+      console.error('Error signing out:', error)
+      setShowDropdown(false)
+      window.location.href = '/'
+    })
+  }
+
+  function toggleDropdown() {
+    setShowDropdown(!showDropdown)
+  }
+
+  function getUserInitial() {
+    if (user && user.email) {
+      return user.email.charAt(0).toUpperCase()
     }
-    setShowDropdown(false)
-    // Redirect to home after sign out
-    window.location.href = '/'
+    return 'U'
+  }
+
+  function isUserAdmin() {
+    return user && user.email === 'fernandobriceno9988@gmail.com'
+  }
+
+  function getNavLinkClass(path) {
+    const location = window.location.pathname
+    if (location === path) {
+      return 'px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 font-outfit text-indigo-600 bg-gradient-to-r from-indigo-50 to-blue-50 shadow-sm'
+    }
+    return 'px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 font-outfit text-gray-600 hover:text-indigo-600 hover:bg-gradient-to-r hover:from-gray-50 hover:to-indigo-50 hover:shadow-sm'
   }
 
   return (
     <BrowserRouter>
-      <header className="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
+      <header className="bg-white shadow-lg sticky top-0 z-50 border-b border-gray-100">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-20 items-center">
+          <div className="flex justify-between h-16 items-center">
             <div className="flex items-center space-x-2">
-              <Link to="/" className="flex items-center">
-                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-outfit">
+              <Link to="/" className="flex items-center group">
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-outfit group-hover:from-blue-700 group-hover:to-indigo-700 transition-all duration-300">
                   Lost & Found
                 </span>
               </Link>
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-1">
-              <NavLink to="/" className="nav-link">
+            <div className="hidden md:flex items-center space-x-2">
+              <Link to="/" className={getNavLinkClass('/')}>
                 Home
-              </NavLink>
-              <NavLink to="/submission" className="nav-link">
+              </Link>
+              <Link to="/submission" className={getNavLinkClass('/submission')}>
                 Submit Item
-              </NavLink>
-              <NavLink to="/search" className="nav-link">
+              </Link>
+              <Link to="/search" className={getNavLinkClass('/search')}>
                 Search
-              </NavLink>
-              <NavLink to="/claim" className="nav-link">
+              </Link>
+              <Link to="/claim" className={getNavLinkClass('/claim')}>
                 Claim
-              </NavLink>
-              {user?.email === 'admin@example.com' && (
-                <NavLink to="/admin" className="nav-link">
+              </Link>
+              {isUserAdmin() && (
+                <Link to="/admin" className={getNavLinkClass('/admin')}>
                   Admin
-                </NavLink>
+                </Link>
               )}
             </div>
 
@@ -101,31 +118,31 @@ function App() {
               {user ? (
                 <div className="relative">
                   <button
-                    onClick={() => setShowDropdown(!showDropdown)}
+                    onClick={toggleDropdown}
                     className="flex items-center space-x-2 focus:outline-none group"
                     id="user-menu"
                   >
-                    <div className="h-9 w-9 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white font-medium">
-                      {user.email?.charAt(0).toUpperCase()}
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white font-medium shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:from-blue-600 group-hover:to-indigo-700">
+                      {getUserInitial()}
                     </div>
                     <span className="hidden md:inline text-gray-700 group-hover:text-indigo-600 transition-colors font-outfit font-medium">
                       {user.email}
                     </span>
-                    <svg className={`w-4 h-4 text-gray-500 transition-transform ${showDropdown ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className={'w-4 h-4 text-gray-500 transition-transform ' + (showDropdown ? 'rotate-180' : '')} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </button>
 
                   {showDropdown && (
-                    <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 overflow-hidden">
+                    <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 z-50 overflow-hidden border border-gray-100">
                       <div className="py-1" role="menu" aria-orientation="vertical">
-                        <div className="px-4 py-3 border-b border-gray-100">
+                        <div className="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white">
                           <p className="text-sm text-gray-500">Signed in as</p>
                           <p className="text-sm font-medium text-gray-900 truncate">{user.email}</p>
                         </div>
                         <button
                           onClick={handleSignOut}
-                          className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors font-outfit font-medium"
+                          className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 transition-all duration-200 font-outfit font-medium"
                           role="menuitem"
                         >
                           Sign out
@@ -138,13 +155,13 @@ function App() {
                 <div className="flex items-center space-x-3">
                   <Link
                     to="/signin"
-                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors font-outfit"
+                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all duration-200 font-outfit rounded-lg"
                   >
                     Sign In
                   </Link>
                   <Link
                     to="/signup"
-                    className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity font-outfit"
+                    className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-medium rounded-lg hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg transition-all duration-300 font-outfit transform hover:scale-105"
                   >
                     Sign Up
                   </Link>
@@ -165,7 +182,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route 
             path="/admin" 
-            element={user?.email === 'admin@example.com' ? <Admin /> : <Navigate to="/" replace />} 
+            element={isUserAdmin() ? <Admin /> : <Navigate to="/" replace />} 
           />
         </Routes>
       </main>

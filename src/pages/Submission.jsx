@@ -19,49 +19,50 @@ function Submission() {
     console.log("Photo:", itemPhoto);
   }
   {/* sends data to supabase */}
-  async function checkSubmission() {
+  function checkSubmission() {
     if (itemName === "" || itemDesc === "" || itemType === "Select Item Type" || !itemPhoto) {
       alert("Please fill in all required fields!");
       return;
     }
 
     // Upload file first
-    const filePath = `item_photos/${Date.now()}-${itemPhoto.name}`;
+    var filePath = "item_photos/" + Date.now() + "-" + itemPhoto.name;
 
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    supabase.storage
       .from("item-images")
-      .upload(filePath, itemPhoto);
+      .upload(filePath, itemPhoto).then(function(uploadResponse) {
+        if (uploadResponse.error) {
+          console.error("Upload error:", uploadResponse.error);
+          alert("Failed to upload image.");
+          return;
+        }
 
-    if (uploadError) {
-      console.error("Upload error:", uploadError);
-      alert("Failed to upload image.");
-      return;
-    }
+        // Get public URL
+        var urlResponse = supabase.storage
+          .from("item-images")
+          .getPublicUrl(filePath);
 
-    // Get public URL
-    const { data: urlData } = supabase.storage
-      .from("item-images")
-      .getPublicUrl(filePath);
+        var imgUrl = urlResponse.data.publicUrl;
 
-    const imgUrl = urlData.publicUrl;
+        // Insert into database
+        supabase
+          .from('items')
+          .insert([{
+            item_name: itemName,
+            item_type: itemType,
+            item_desc: itemDesc,
+            image_url: imgUrl,
+            status: 'pending'
+          }]).then(function(insertResponse) {
+            if (insertResponse.error) {
+              console.error("Insert error:", insertResponse.error);
+              alert("Failed to save item.");
+              return;
+            }
 
-    // Insert into database
-    const { data, error } = await supabase
-      .from('items')
-      .insert([{
-        item_name: itemName,
-        item_type: itemType,
-        item_desc: itemDesc,
-        image_url: imgUrl,
-        status: 'pending' // Add this line
-    }]);
-    if (error) {
-      console.error("Insert error:", error);
-      alert("Failed to save item.");
-      return;
-    }
-
-    alert("Item submitted successfully!");
+            alert("Item submitted successfully!");
+          });
+      });
   }
 
 
@@ -140,7 +141,7 @@ function Submission() {
         <button
           type="submit"
           onClick={() => checkSubmission()}
-          className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-500 transition"
+          className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 hover:shadow-lg transition-all duration-300 font-outfit transform hover:scale-105"
         >
           Submit
         </button>

@@ -3,65 +3,79 @@ import { useNavigate, Link } from 'react-router-dom'
 import supabase from '../config/supabaseClient.js'
 
 function SignUp() {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    classGrade: '9th',
-    phone: '',
-    password: '',
-    confirmPassword: ''
-  })
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [classGrade, setClassGrade] = useState('9th')
+  const [phone, setPhone] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
-  function handleChange(e) {
-    const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
+  function handleUsernameChange(e) {
+    setUsername(e.target.value)
   }
 
-  async function handleSignUp(e) {
+  function handleEmailChange(e) {
+    setEmail(e.target.value)
+  }
+
+  function handleClassGradeChange(e) {
+    setClassGrade(e.target.value)
+  }
+
+  function handlePhoneChange(e) {
+    setPhone(e.target.value)
+  }
+
+  function handlePasswordChange(e) {
+    setPassword(e.target.value)
+  }
+
+  function handleConfirmPasswordChange(e) {
+    setConfirmPassword(e.target.value)
+  }
+
+  function handleSignUp(e) {
     e.preventDefault()
     
-    if (formData.password !== formData.confirmPassword) {
+    if (password !== confirmPassword) {
       alert("Passwords don't match!")
       return
     }
 
-    if (formData.password.length < 6) {
+    if (password.length < 6) {
       alert("Password should be at least 6 characters")
       return
     }
 
     setIsLoading(true)
 
-    try {
-      const { data: authData, error: signUpError } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            username: formData.username,
-            class_grade: formData.classGrade,
-            phone: formData.phone
-          }
+    supabase.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        data: {
+          username: username,
+          class_grade: classGrade,
+          phone: phone
         }
-      })
-
-      if (signUpError) throw signUpError
-
+      }
+    }).then(function(response) {
+      if (response.error) {
+        throw response.error
+      }
+      
       // Show success message with email confirmation notice
-      alert(`Account created successfully! Please check your email (${formData.email}) to verify your account.`)
+      alert("Account created successfully! Please check your email (" + email + ") to verify your account.")
       
       // Redirect to home after successful sign up
       navigate("/")
-    } catch (error) {
+    }).catch(function(error) {
       alert(error.message || 'Something went wrong. Please try again.')
-    } finally {
+    }).finally(function() {
       setIsLoading(false)
-    }
+    })
   }
 
   return (
@@ -83,8 +97,8 @@ function SignUp() {
                   type="text"
                   name="username"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  value={formData.username}
-                  onChange={handleChange}
+                  value={username}
+                  onChange={handleUsernameChange}
                   required
                 />
               </div>
@@ -95,8 +109,8 @@ function SignUp() {
                   type="email"
                   name="email"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  value={formData.email}
-                  onChange={handleChange}
+                  value={email}
+                  onChange={handleEmailChange}
                   required
                 />
               </div>
@@ -105,8 +119,8 @@ function SignUp() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Class Grade</label>
                 <select
                   name="classGrade"
-                  value={formData.classGrade}
-                  onChange={handleChange}
+                  value={classGrade}
+                  onChange={handleClassGradeChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 >
                   <option value="9th">9th Grade</option>
@@ -122,8 +136,8 @@ function SignUp() {
                   type="tel"
                   name="phone"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  value={formData.phone}
-                  onChange={handleChange}
+                  value={phone}
+                  onChange={handlePhoneChange}
                   required
                 />
               </div>
@@ -135,8 +149,8 @@ function SignUp() {
                   name="password"
                   placeholder="At least 6 characters"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  value={formData.password}
-                  onChange={handleChange}
+                  value={password}
+                  onChange={handlePasswordChange}
                   required
                   minLength="6"
                 />
@@ -148,8 +162,8 @@ function SignUp() {
                   type="password"
                   name="confirmPassword"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
+                  value={confirmPassword}
+                  onChange={handleConfirmPasswordChange}
                   required
                 />
               </div>
@@ -169,7 +183,7 @@ function SignUp() {
                   Creating Account...
                 </span>
               ) : (
-                "Create Account"
+                <span>Create Account</span>
               )}
             </button>
 

@@ -8,7 +8,7 @@ function SignIn() {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
-  async function handleSignIn(e) {
+  function handleSignIn(e) {
     e.preventDefault()
     if (!email || !password) {
       alert("Please enter both email and password")
@@ -17,23 +17,20 @@ function SignIn() {
 
     setIsLoading(true)
     
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password: password
-      })
-
-      if (error) {
-        alert(error.message)
-        return
+    supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password: password
+    }).then(function(response) {
+      if (response.error) {
+        alert(response.error.message)
+      } else {
+        navigate("/")
       }
-      
-      navigate("/")
-    } catch (error) {
+    }).catch(function(error) {
       alert("An error occurred. Please try again.")
-    } finally {
+    }).finally(function() {
       setIsLoading(false)
-    }
+    })
   }
 
   return (
@@ -101,7 +98,7 @@ function SignIn() {
                   Signing in...
                 </span>
               ) : (
-                "Sign In"
+                <span>Sign In</span>
               )}
             </button>
 
