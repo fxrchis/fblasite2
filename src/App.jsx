@@ -1,3 +1,4 @@
+// Main App component - Handles routing and authentication
 import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate, Navigate } from 'react-router-dom'
 import Home from './pages/Home.jsx'
@@ -10,12 +11,14 @@ import supabase from './config/supabaseClient.js'
 import Admin from './pages/Admin';
 
 function App() {
+  // User authentication state
   const [user, setUser] = useState(null)
+  // User dropdown menu visibility
   const [showDropdown, setShowDropdown] = useState(false)
 
-  // Check for user session on mount
+  // Check for existing user session on app load
   useEffect(() => {
-    // Get initial session
+    // Get initial session from Supabase
     supabase.auth.getSession().then(function(response) {
       var session = response.data.session
       if (session && session.user) {
@@ -25,7 +28,7 @@ function App() {
       }
     })
 
-    // Listen for auth changes
+    // Listen for authentication state changes
     var authListener = supabase.auth.onAuthStateChange(function(event, session) {
       if (session && session.user) {
         setUser(session.user)
@@ -34,6 +37,7 @@ function App() {
       }
     })
 
+    // Cleanup auth listener on component unmount
     return function() {
       if (authListener && authListener.data && authListener.data.subscription) {
         authListener.data.subscription.unsubscribe()
@@ -41,6 +45,7 @@ function App() {
     }
   }, [])
 
+  // Handle user sign out
   function handleSignOut() {
     supabase.auth.signOut().then(function(response) {
       if (response.error) {
@@ -56,10 +61,12 @@ function App() {
     })
   }
 
+  // Toggle user dropdown menu
   function toggleDropdown() {
     setShowDropdown(!showDropdown)
   }
 
+  // Get user's first initial for avatar
   function getUserInitial() {
     if (user && user.email) {
       return user.email.charAt(0).toUpperCase()
@@ -67,10 +74,12 @@ function App() {
     return 'U'
   }
 
+  // Check if current user is admin
   function isUserAdmin() {
     return user && user.email === 'fernandobriceno9988@gmail.com'
   }
 
+  // Get CSS classes for navigation links based on current route
   function getNavLinkClass(path) {
     const location = window.location.pathname
     if (location === path) {

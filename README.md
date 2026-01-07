@@ -1,16 +1,37 @@
-# React + Vite
+## Technologies & Libraries
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Frontend Framework
+- **React** - [https://reactjs.org](https://reactjs.org)
 
-Currently, two official plugins are available:
+### Routing
+- **React Router** - [https://reactrouter.com](https://reactrouter.com)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### UI Framework & Styling
+- **Tailwind CSS** - [https://tailwindcss.com](https://tailwindcss.com)
 
-## React Compiler
+### UI Components
+- **React Bootstrap** - [https://react-bootstrap.github.io/](https://react-bootstrap.github.io/)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Backend & Database
+- **Supabase** - [https://supabase.com](https://supabase.com)
 
-## Expanding the ESLint configuration
+### Development Tools
+- **Vite** - [https://vitejs.dev](https://vitejs.dev)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## External Resources
+
+### Fonts
+- **Outfit Font** - [https://fonts.google.com/specimen/Outfit](https://fonts.google.com/specimen/Outfit)
+
+### Icons
+- **Emoji Set** - [https://emoji.org](https://emoji.org)
+- **SVG Icons** - Custom inline SVGs for GitHub and other elements
+
+### Stock Images
+- **Placeholder Images** - [https://unsplash.com](https://unsplash.com) (for development)
+- **User Uploads** - Stored in Supabase Storage
+
+### Development Resources
+- **React Documentation** - [https://react.dev](https://react.dev)
+- **Tailwind Documentation** - [https://tailwindcss.com/docs](https://tailwindcss.com/docs)
+- **Supabase Documentation** - [https://supabase.com/docs](https://supabase.com/docs)
