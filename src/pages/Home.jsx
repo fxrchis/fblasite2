@@ -1,4 +1,6 @@
 // Home page component - Main landing page with user instructions
+import { Link } from 'react-router-dom';
+
 function Home() {
   // Feature cards for main actions
   const features = [
@@ -55,6 +57,66 @@ function Home() {
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6 lg:p-8 mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">How to Use Our Platform</h2>
           
+          {/* Get Started Section */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 lg:pb-20">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Ready to Get Started?</h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Join our community and help reunite lost items with their owners
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
+              <Link
+                to="/submission"
+                className="group relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-lg rounded-2xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl min-w-[200px]"
+              >
+                <span className="relative z-10">Submit Lost Item</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </Link>
+              
+              <Link
+                to="/search"
+                className="group relative inline-flex items-center justify-center px-8 py-4 bg-white text-gray-900 font-bold text-lg rounded-2xl border-2 border-gray-300 hover:border-blue-500 hover:text-blue-600 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg min-w-[200px]"
+              >
+                <span className="relative z-10">Search Items</span>
+                <div className="absolute inset-0 bg-white rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </Link>
+              
+              <Link
+                to="/claim"
+                className="group relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold text-lg rounded-2xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl min-w-[200px]"
+              >
+                <span className="relative z-10">Claim Item</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </Link>
+            </div>
+            
+            <div className="mt-12 sm:mt-16 text-center">
+              <p className="text-gray-500 text-sm mb-4">Need help? Check our detailed guide above</p>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
+                <div className="flex items-center gap-2 text-gray-400">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-sm">Free to use</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-400">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                  <span className="text-sm">Secure platform</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-400">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  <span className="text-sm">Fast results</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Account Setup Section */}
           <div className="bg-purple-50 rounded-xl p-4 sm:p-6 mb-6 sm:mb-8">
             <h3 className="text-lg sm:text-xl font-bold text-purple-900 mb-3 sm:mb-4 flex items-center gap-2">
@@ -195,46 +257,11 @@ function Home() {
                 <p>• <strong>Secure Password:</strong> Use a strong password for your account</p>
               </div>
             </div>
+          </div>
+        </div>
       </div>
     </div>
-
-    {/* Footer */}
-    <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="grid sm:grid-cols-2 gap-8">
-          <div>
-            <h3 className="text-lg font-bold mb-4">Lost & Found Hub</h3>
-            <p className="text-gray-400 text-sm mb-4">Helping reunite people with their lost belongings through technology and community.</p>
-            <div className="flex gap-4">
-              <a
-                href="https://github.com/fxrchis/fblasite2"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                </svg>
-                <span className="text-sm">GitHub</span>
-              </a>
-            </div>
-          </div>
-          <div>
-            <h3 className="text-lg font-bold mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-sm">
-              <li><Link to="/" className="text-gray-400 hover:text-white transition-colors">Home</Link></li>
-              <li><Link to="/submission" className="text-gray-400 hover:text-white transition-colors">Submit Item</Link></li>
-              <li><Link to="/search" className="text-gray-400 hover:text-white transition-colors">Search</Link></li>
-              <li><Link to="/claim" className="text-gray-400 hover:text-white transition-colors">Claim</Link></li>
-            </ul>
-          </div>
-        </div>
-        <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-gray-800 text-center text-gray-400 text-xs sm:text-sm">
-          <p>Built with React, Supabase, and Tailwind CSS</p>
-        </div>
-      </div>
-    </footer>
-  </div>
-);
+  );
+}
 
 export default Home;
