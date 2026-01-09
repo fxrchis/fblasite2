@@ -222,10 +222,10 @@ function Home() {
           <div>
             <h3 className="text-lg font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
-              <li><a href="/" className="text-gray-400 hover:text-white transition-colors">Home</a></li>
-              <li><a href="/submission" className="text-gray-400 hover:text-white transition-colors">Submit Item</a></li>
-              <li><a href="/search" className="text-gray-400 hover:text-white transition-colors">Search</a></li>
-              <li><a href="/claim" className="text-gray-400 hover:text-white transition-colors">Claim</a></li>
+              <li><Link to="/" className="text-gray-400 hover:text-white transition-colors">Home</Link></li>
+              <li><Link to="/submission" className="text-gray-400 hover:text-white transition-colors">Submit Item</Link></li>
+              <li><Link to="/search" className="text-gray-400 hover:text-white transition-colors">Search</Link></li>
+              <li><Link to="/claim" className="text-gray-400 hover:text-white transition-colors">Claim</Link></li>
             </ul>
           </div>
         </div>
