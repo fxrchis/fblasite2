@@ -38,7 +38,7 @@ function Home() {
           </p>
           <div className="flex justify-center gap-4">
             <a
-              href="https://github.com/your-username/fbla-website"
+              href="https://github.com/fxrchis/fblasite2"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all duration-200 font-outfit font-medium"
@@ -196,31 +196,6 @@ function Home() {
               </div>
             </div>
           </div>
-
-          {/* Account Benefits */}
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6 mt-6">
-            <h3 className="text-lg font-bold text-green-900 mb-3 flex items-center gap-2">
-              <span className="text-xl">✨</span>
-              Why Create an Account?
-            </h3>
-            <div className="grid md:grid-cols-3 gap-4 text-green-800 text-sm">
-              <div className="space-y-2">
-                <p>• <strong>Track Submissions</strong> - View all your submitted items</p>
-                <p>• <strong>Claim Management</strong> - Manage your item claims</p>
-                <p>• <strong>Notifications</strong> - Get updates on your items</p>
-              </div>
-              <div className="space-y-2">
-                <p>• <strong>Save Time</strong> - Faster form submissions</p>
-                <p>• <strong>Trust System</strong> - Verified user accounts</p>
-                <p>• <strong>History</strong> - Complete activity log</p>
-              </div>
-              <div className="space-y-2">
-                <p>• <strong>Communication</strong> - Contact claimants directly</p>
-                <p>• <strong>Priority</strong> - Faster review process</p>
-                <p>• <strong>Security</strong> - Protected personal data</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -257,7 +232,7 @@ function Home() {
             </div>
             <div className="flex gap-6">
               <a
-                href="https://github.com/your-username/fbla-website"
+                href="https://github.com/fxrchis/fblasite2"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
